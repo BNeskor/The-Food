@@ -38,19 +38,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
    function getTimeremaning(toEnd) {
       let difference = Date.parse(toEnd) - Date.parse(new Date());
-      const allSec = difference / 1000;
-
-      const allDays = allSec / 86400;
-      const days = Math.floor(allDays);
-
-      const allHours = (allDays - days) * 24;
-      const hours = Math.floor(allHours);
-
-      const allMinuts = (allHours - hours) * 60;
-      const minutes = Math.floor(allMinuts);
-
-      const allSeconds = (allMinuts - minutes) * 60;
-      const seconds = Math.floor(allSeconds);
+      const days = Math.floor((difference / (1000 * 60 * 60 * 24))),
+         hours = Math.floor((difference / (1000 * 60 * 60) % 24)),
+         minutes = Math.floor((difference / 1000 / 60) % 60),
+         seconds = Math.floor((difference / 1000) % 60);
 
       return {
          'total': difference,
@@ -63,7 +54,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
    function getZiro(num) {
       if (num >= 0 && num < 10) {
-         return `${num}0`;
+         return `0${num}`;
       } else {
          return num;
       }
@@ -94,5 +85,41 @@ window.addEventListener('DOMContentLoaded', () => {
 
    }
    //TIMER END
+
+
+
+
+   //MODAL
+   const modalTriggers = document.querySelectorAll('[data-modal]'),
+      modal = document.querySelector('.modal'),
+      modalClotheBtn = document.querySelector('.modal__close'),
+      modalTimeout = setTimeout(toggleModal, 30000);
+
+   modalTriggers.forEach(btn => {
+      btn.addEventListener('click', () => {
+         toggleModal();
+         clearTimeout(modalTimeout);
+      });
+
+   });
+
+   modalClotheBtn.addEventListener('click', toggleModal);
+
+   modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+         toggleModal();
+      }
+   });
+   document.addEventListener('keydown',(e)=>{
+      if (e.code === "Escape" && modal.classList.contains('show')) {
+         toggleModal();
+      }
+   });
+   
+   function toggleModal() {
+      modal.classList.toggle('show');
+      document.body.classList.toggle("scroll");
+   }
+   //MODAL END
 
 });
