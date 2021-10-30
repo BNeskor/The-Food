@@ -98,13 +98,10 @@ window.addEventListener('DOMContentLoaded', () => {
    modalTriggers.forEach(btn => {
       btn.addEventListener('click', () => {
          toggleModal();
-         clearTimeout(modalTimeout);
       });
 
    });
-
    modalClotheBtn.addEventListener('click', toggleModal);
-
    modal.addEventListener('click', (e) => {
       if (e.target === modal) {
          toggleModal();
@@ -115,10 +112,19 @@ window.addEventListener('DOMContentLoaded', () => {
          toggleModal();
       }
    });
+   document.addEventListener('scroll', showModalByscroll);
    
    function toggleModal() {
       modal.classList.toggle('show');
-      document.body.classList.toggle("scroll");
+      document.body.classList.toggle("scroll");//bocumnet overflow - hidden  or scroll
+      clearTimeout(modalTimeout);
+      document.removeEventListener('scroll',showModalByscroll);
+   }
+
+   function showModalByscroll(){
+      if(document.body.offsetHeight == window.scrollY + document.documentElement.clientHeight ){
+         toggleModal();
+      }
    }
    //MODAL END
 
