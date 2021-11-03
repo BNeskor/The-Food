@@ -290,7 +290,7 @@ window.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', e => {
       e.preventDefault();
       const btn = form.querySelector('button');
-      btn.classList.add('btn-status');
+      btn.classList.add(message.loading);
       const request = new XMLHttpRequest();
       request.open('POST', "server.php");
       request.setRequestHeader('Content-type', 'aplication/json');
@@ -305,7 +305,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (request.status === 200) {
           showThanksMOdal(message.success);
           form.reset();
-          btn.classList.remove('btn-status');
+          btn.classList.remove(message.loading);
         } else {
           showThanksMOdal(message.failure);
           form.reset();
