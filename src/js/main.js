@@ -126,7 +126,8 @@ window.addEventListener('DOMContentLoaded', () => {
    }
 
    function showModalByscroll() {
-      if (document.body.offsetHeight == window.scrollY + document.documentElement.clientHeight) {
+      if (document.body.offsetHeight < window.scrollY + document.documentElement.clientHeight + 100) {
+         console.log('tets');
          showModal();
       }
    }
