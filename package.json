@@ -28,6 +28,7 @@
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
+    "core-js": "^3.19.1",
     "jshint": "^2.13.1"
   }
 }

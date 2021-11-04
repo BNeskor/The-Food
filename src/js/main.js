@@ -112,14 +112,14 @@ window.addEventListener('DOMContentLoaded', () => {
    });
    document.addEventListener('scroll', showModalByscroll);
 
-   function showModal(){
+   function showModal() {
       modal.classList.remove('hide');
       modal.classList.add('show');
       document.body.classList.add("scroll");//bocumnet overflow - hidden  or scroll
       clearTimeout(modalTimeout);
       document.removeEventListener('scroll', showModalByscroll);
    }
-   function hideModal(){
+   function hideModal() {
       modal.classList.add('hide');
       modal.classList.remove('show');
       document.body.classList.remove("scroll");//bocumnet overflow - hidden  or scroll
@@ -153,11 +153,11 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       render() {
          const element = document.createElement('div');
-         if(this.classes.length === 0){
+         if (this.classes.length === 0) {
             this.classes = 'menu__item';
             element.classList.add(this.classes);
-         }else{
-            this.classes.forEach(className => element.classList.add('menu__item',className,));
+         } else {
+            this.classes.forEach(className => element.classList.add('menu__item', className,));
          }
          element.innerHTML = `
              <img src=${this.src} alt=${this.alt}>
@@ -183,7 +183,7 @@ window.addEventListener('DOMContentLoaded', () => {
       12,
       ".menu .container",
       'white'
-   
+
    ).render();
    new MenuCart(
       "img/tabs/vegy.jpg",
@@ -195,7 +195,7 @@ window.addEventListener('DOMContentLoaded', () => {
       5,
       ".menu .container",
       'red'
-   
+
    ).render();
    new MenuCart(
       "img/tabs/post.jpg",
@@ -207,7 +207,7 @@ window.addEventListener('DOMContentLoaded', () => {
       9,
       ".menu .container",
       "big"
-   
+
    ).render();
    //MENU END
 
@@ -221,48 +221,45 @@ window.addEventListener('DOMContentLoaded', () => {
       failure: 'Что-то пошло не так...'
    };
 
-   forms.forEach(item =>{
+   forms.forEach(item => {
       postData(item);
    });
-   
-   function postData(form){
-      form.addEventListener('submit',(e)=>{
+
+   function postData(form) {
+      form.addEventListener('submit', (e) => {
          e.preventDefault();
          const btn = form.querySelector('button');
          btn.classList.add(message.loading);
 
-         const request = new XMLHttpRequest();
-         request.open('POST',"server.php");
-         request.setRequestHeader('Content-type','aplication/json');
          
-
          const formData = new FormData(form);
          const obj = {};
-         formData.forEach(function(value,key){
+         formData.forEach(function (value, key) {
             obj[key] = value;
          });
-         const json= JSON.stringify(obj);
-
-         request.send(json);
-
-
-         request.addEventListener('load', () =>{
-            if(request.status === 200) {
+         fetch('server.php',{
+            method: "POST",
+            headers: {
+               'Content-type':"aplication/json"
+            },
+            body: JSON.stringify(obj)
+         }).then((data)=>data.text()
+         ).then((data) =>{
+               console.log(data);
                showThanksMOdal(message.success);
-               form.reset();
                btn.classList.remove(message.loading);
-            }else{
-               showThanksMOdal(message.failure);
-               form.reset();
-            }
+         }).catch((data)=>{
+            console.log(data);
+            showThanksMOdal(message.failure);
+         }).finally(()=>{
+            form.reset();
          });
-         
       });
    }
    //FORMS
 
    //MODAL_NOTIFYCATION
-   function showThanksMOdal(message){
+   function showThanksMOdal(message) {
       const previousModalDialog = document.querySelector('.modal__dialog');
 
       previousModalDialog.classList.add('hide');
@@ -277,13 +274,13 @@ window.addEventListener('DOMContentLoaded', () => {
        </div>
       `;
       document.querySelector('.modal').append(thanksModal);
-      setTimeout(()=>{
+      setTimeout(() => {
          thanksModal.remove();
          previousModalDialog.classList.add('show');
          previousModalDialog.classList.remove('hide');
          hideModal();
-      },2000);
+      }, 2000);
    }
-
    //MODAL_NOTIFYCATION
+
 });
