@@ -186,7 +186,6 @@ window.addEventListener('DOMContentLoaded', () => {
          new MenuCart(img,altimg,title,descr,price,'.menu .container').render();
       });
    });
-
    //MENU END
 
 
@@ -266,5 +265,48 @@ window.addEventListener('DOMContentLoaded', () => {
       }, 2000);
    }
    //MODAL_NOTIFYCATION
+
+
+   //SLIDER
+   const prevBtn = document.querySelector('.offer__slider-prev'),
+         nextBtn = document.querySelector('.offer__slider-next'),
+         slides = document.querySelectorAll('.offer__slide'),
+         current = document.querySelector('#current'),
+         total = document.querySelector('#total');
+
+   let slideIndex = 1;
+   showSlides(slideIndex);
+   total.innerHTML = getZiro(slides.length);
+   
+      function showSlides(n){
+         if(n > slides.length){
+            slideIndex = 1;
+         }
+         if(n < 1){
+            slideIndex = slides.length;
+         }
+
+         slides.forEach(slide =>{
+            slide.classList.remove('show');
+            slide.classList.add('hide');
+         });
+         slides[slideIndex-1].classList.remove('hide');
+         slides[slideIndex-1].classList.add('show');
+
+         current.innerHTML = getZiro(slideIndex);
+      }
+
+
+      function plusSlides(n){
+         showSlides(slideIndex += n);
+      }
+
+      prevBtn.addEventListener('click',()=>{
+         plusSlides(-1);
+      });
+      nextBtn.addEventListener('click',()=>{
+         plusSlides(1);
+      });
+   //SLIDER
 
 });
