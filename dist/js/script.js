@@ -127,7 +127,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
    function showModalByscroll() {
       if (document.body.offsetHeight < window.scrollY + document.documentElement.clientHeight + 100) {
-         console.log('tets');
          showModal();
       }
    }
@@ -173,43 +172,23 @@ window.addEventListener('DOMContentLoaded', () => {
       }
    }
 
+   const getResourses = async(url) =>{
+      const res = await fetch(url);
+      if(!res.ok){
+         throw new Error(`could not fetch ${url}, status: ${res.status}`);
+      }
+      return await res.json();
+   };
 
-   new MenuCart(
-      "img/tabs/elite.jpg",
-      "elite",
-      'Меню “Премиум”',
-      'В меню “Премиум” мы используем не только красивый дизайн упаковки,\
-      но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-      12,
-      ".menu .container",
-      'white'
+   getResourses('http://localhost:3000/menu')
+   .then(data =>{
+      data.forEach(({img,altimg,title,descr,price}) =>{
+         new MenuCart(img,altimg,title,descr,price,'.menu .container').render();
+      });
+   });
 
-   ).render();
-   new MenuCart(
-      "img/tabs/vegy.jpg",
-      "vegy",
-      'Меню "Фитнес"',
-      'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих\
-      овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной\
-      ценой и высоким качеством!',
-      5,
-      ".menu .container",
-      'red'
-
-   ).render();
-   new MenuCart(
-      "img/tabs/post.jpg",
-      "post",
-      'Меню "Постное"',
-      'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие\
-      продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное\
-      количество белков за счет тофу и импортных вегетарианских стейков. ',
-      9,
-      ".menu .container",
-      "big"
-
-   ).render();
    //MENU END
+
 
    //FORMS
 
@@ -222,29 +201,34 @@ window.addEventListener('DOMContentLoaded', () => {
    };
 
    forms.forEach(item => {
-      postData(item);
+      bindPostData(item);
    });
 
-   function postData(form) {
+   const postData = async(url, data) =>{
+      const res = await fetch(url,{
+         method: "POST",
+         headers: {
+            'Content-Type':"application/json"
+         },
+         body: JSON.stringify(data)
+      });
+      return await res.json();
+   };
+
+   function bindPostData(form) {
       form.addEventListener('submit', (e) => {
          e.preventDefault();
          const btn = form.querySelector('button');
          btn.classList.add(message.loading);
 
+
+         const formData =  new FormData(form);
+         const json = Object.fromEntries(formData.entries());
+
          
-         const formData = new FormData(form);
-         const obj = {};
-         formData.forEach(function (value, key) {
-            obj[key] = value;
-         });
-         fetch('server.php',{
-            method: "POST",
-            headers: {
-               'Content-type':"aplication/json"
-            },
-            body: JSON.stringify(obj)
-         }).then((data)=>data.text()
-         ).then((data) =>{
+         postData('http://localhost:3000/requests', json)
+
+         .then((data) =>{
                console.log(data);
                showThanksMOdal(message.success);
                btn.classList.remove(message.loading);
