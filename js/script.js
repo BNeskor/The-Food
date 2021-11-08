@@ -272,41 +272,58 @@ window.addEventListener('DOMContentLoaded', () => {
          nextBtn = document.querySelector('.offer__slider-next'),
          slides = document.querySelectorAll('.offer__slide'),
          current = document.querySelector('#current'),
-         total = document.querySelector('#total');
+         total = document.querySelector('#total'),
+         slidesWreaper = document.querySelector('.offer__slider-wrapper'),
+         slidesField = document.querySelector('.offer__slide-inner'),
+         width = window.getComputedStyle(slidesWreaper).width;
 
    let slideIndex = 1;
-   showSlides(slideIndex);
+   let offset = 0;
+
+   current.textContent = getZiro(slideIndex);
    total.innerHTML = getZiro(slides.length);
-   
-      function showSlides(n){
-         if(n > slides.length){
-            slideIndex = 1;
-         }
-         if(n < 1){
-            slideIndex = slides.length;
-         }
+
+
+         slidesField.style.width = 100 * slides.length + "%";
+         slidesField.style.display  = "flex";
+         slidesField.style.transition = "0.5s all";
+         slidesWreaper.style.overflow = "hidden";
 
          slides.forEach(slide =>{
-            slide.classList.remove('show');
-            slide.classList.add('hide');
+            slide.style.width = parseInt(width);
          });
-         slides[slideIndex-1].classList.remove('hide');
-         slides[slideIndex-1].classList.add('show');
 
-         current.innerHTML = getZiro(slideIndex);
-      }
+         nextBtn.addEventListener('click',()=>{
+            if(offset === (parseInt(width) * (slides.length - 1))){
+               offset = 0;
+            }else{
+               offset += parseInt(width);
+            }
 
+            slidesField.style.transform = `translateX(-${offset}px)`;
 
-      function plusSlides(n){
-         showSlides(slideIndex += n);
-      }
+            if(slideIndex === slides.length){
+               slideIndex = 1;
+            }else{
+               slideIndex++;
+            }
+            current.textContent = getZiro(slideIndex);
+         });
 
-      prevBtn.addEventListener('click',()=>{
-         plusSlides(-1);
-      });
-      nextBtn.addEventListener('click',()=>{
-         plusSlides(1);
-      });
-   //SLIDER
+         prevBtn.addEventListener('click',()=>{
+            if(offset === 0){
+               offset = (parseInt(width) * (slides.length - 1));
+            }else{
+               offset -= parseInt(width);
+            }
+            slidesField.style.transform = `translateX(-${offset}px)`;
+
+            if(slideIndex === 1){
+               slideIndex = slides.length;
+            }else{
+               slideIndex--;
+            }
+            current.textContent = getZiro(slideIndex);
+         });
 
 });
