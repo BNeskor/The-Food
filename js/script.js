@@ -291,7 +291,7 @@ window.addEventListener('DOMContentLoaded', () => {
          slidesWreaper.style.overflow = "hidden";
 
          slides.forEach(slide =>{
-            slide.style.width = parseInt(width);
+            slide.style.width = width.replace(/px/g,"");
          });
 
          slider.style.position = "relative";
@@ -313,12 +313,11 @@ window.addEventListener('DOMContentLoaded', () => {
          }
 
          nextBtn.addEventListener('click',()=>{
-            if(offset === (parseInt(width) * (slides.length - 1))){
+            if(offset === width.replace(/px/g,"") * (slides.length - 1)){
                offset = 0;
             }else{
-               offset += parseInt(width);
+               offset += +width.replace(/px/g,"");
             }
-
             slidesField.style.transform = `translateX(-${offset}px)`;
 
             if(slideIndex === slides.length){
@@ -333,9 +332,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
          prevBtn.addEventListener('click',()=>{
             if(offset === 0){
-               offset = (parseInt(width) * (slides.length - 1));
+               offset = (width.replace(/px/g,"") * (slides.length - 1));
             }else{
-               offset -= parseInt(width);
+               offset -= width.replace(/px/g,"");
             }
             slidesField.style.transform = `translateX(-${offset}px)`;
 
@@ -353,7 +352,7 @@ window.addEventListener('DOMContentLoaded', () => {
             dot.addEventListener('click', (e)=>{
                   const slideTo = e.target.getAttribute('data-slide-to');
                   slideIndex = slideTo;
-                  offset = (parseInt(width) * (slideTo - 1));
+                  offset = (width.replace(/px/g,"") * (slideTo - 1));
                   slidesField.style.transform = `translateX(-${offset}px)`;
                   dots.forEach(dot => dot.style.opacity = '.5');
                   dots[slideIndex - 1].style.opacity = 1;
@@ -361,3 +360,4 @@ window.addEventListener('DOMContentLoaded', () => {
             });
          });
 });
+
