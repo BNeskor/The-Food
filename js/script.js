@@ -269,6 +269,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
    //SLIDER
    const prevBtn = document.querySelector('.offer__slider-prev'),
+         slider = document.querySelector('.offer__slider'),
          nextBtn = document.querySelector('.offer__slider-next'),
          slides = document.querySelectorAll('.offer__slide'),
          current = document.querySelector('#current'),
@@ -293,6 +294,24 @@ window.addEventListener('DOMContentLoaded', () => {
             slide.style.width = parseInt(width);
          });
 
+         slider.style.position = "relative";
+
+         const indicators = document.createElement('ol');
+         const dots = [];
+         indicators.classList.add("carousel-indicators");
+         slider.append(indicators);
+
+         for (let i = 0; i < slides.length; i++){
+            const dot = document.createElement('li');
+            dot.setAttribute('data-slide-to',i+1);
+            dot.classList.add('dot');
+            indicators.append(dot);
+            if (i == 0){
+               dot.style.opacity = 1;
+            }
+            dots.push(dot);
+         }
+
          nextBtn.addEventListener('click',()=>{
             if(offset === (parseInt(width) * (slides.length - 1))){
                offset = 0;
@@ -308,6 +327,8 @@ window.addEventListener('DOMContentLoaded', () => {
                slideIndex++;
             }
             current.textContent = getZiro(slideIndex);
+            dots.forEach(dot => dot.style.opacity = '.5');
+            dots[slideIndex - 1].style.opacity = 1;
          });
 
          prevBtn.addEventListener('click',()=>{
@@ -324,6 +345,19 @@ window.addEventListener('DOMContentLoaded', () => {
                slideIndex--;
             }
             current.textContent = getZiro(slideIndex);
+            dots.forEach(dot => dot.style.opacity = '.5');
+            dots[slideIndex - 1].style.opacity = 1;
          });
 
+         dots.forEach(dot =>{
+            dot.addEventListener('click', (e)=>{
+                  const slideTo = e.target.getAttribute('data-slide-to');
+                  slideIndex = slideTo;
+                  offset = (parseInt(width) * (slideTo - 1));
+                  slidesField.style.transform = `translateX(-${offset}px)`;
+                  dots.forEach(dot => dot.style.opacity = '.5');
+                  dots[slideIndex - 1].style.opacity = 1;
+                  current.textContent = getZiro(slideIndex);
+            });
+         });
 });
