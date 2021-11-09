@@ -326,8 +326,7 @@ window.addEventListener('DOMContentLoaded', () => {
                slideIndex++;
             }
             current.textContent = getZiro(slideIndex);
-            dots.forEach(dot => dot.style.opacity = '.5');
-            dots[slideIndex - 1].style.opacity = 1;
+            addOpacity(dots);
          });
 
          prevBtn.addEventListener('click',()=>{
@@ -344,8 +343,7 @@ window.addEventListener('DOMContentLoaded', () => {
                slideIndex--;
             }
             current.textContent = getZiro(slideIndex);
-            dots.forEach(dot => dot.style.opacity = '.5');
-            dots[slideIndex - 1].style.opacity = 1;
+            addOpacity(dots);
          });
 
          dots.forEach(dot =>{
@@ -355,9 +353,15 @@ window.addEventListener('DOMContentLoaded', () => {
                   offset = (width.replace(/px/g,"") * (slideTo - 1));
                   slidesField.style.transform = `translateX(-${offset}px)`;
                   dots.forEach(dot => dot.style.opacity = '.5');
-                  dots[slideIndex - 1].style.opacity = 1;
-                  current.textContent = getZiro(slideIndex);
+                  addOpacity(dots);
             });
          });
+   
+         function addOpacity(arr){
+            arr.forEach(item =>{
+               item.style.opacity = '.5';
+            });
+            arr[slideIndex -1].style.opacity = 1;
+         }
 });
 
