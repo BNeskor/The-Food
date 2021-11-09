@@ -276,8 +276,8 @@ window.addEventListener('DOMContentLoaded', () => {
          total = document.querySelector('#total'),
          slidesWreaper = document.querySelector('.offer__slider-wrapper'),
          slidesField = document.querySelector('.offer__slide-inner'),
-         width = window.getComputedStyle(slidesWreaper).width;
-
+         width = window.getComputedStyle(slidesWreaper).width,
+         deletePX = number => +number.replace(/px/g,"");
    let slideIndex = 1;
    let offset = 0;
 
@@ -291,7 +291,7 @@ window.addEventListener('DOMContentLoaded', () => {
          slidesWreaper.style.overflow = "hidden";
 
          slides.forEach(slide =>{
-            slide.style.width = width.replace(/px/g,"");
+            slide.style.width = deletePX(width);
          });
 
          slider.style.position = "relative";
@@ -313,10 +313,10 @@ window.addEventListener('DOMContentLoaded', () => {
          }
 
          nextBtn.addEventListener('click',()=>{
-            if(offset === width.replace(/px/g,"") * (slides.length - 1)){
+            if(offset === deletePX(width) * (slides.length - 1)){
                offset = 0;
             }else{
-               offset += +width.replace(/px/g,"");
+               offset += deletePX(width);
             }
             slidesField.style.transform = `translateX(-${offset}px)`;
 
@@ -331,9 +331,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
          prevBtn.addEventListener('click',()=>{
             if(offset === 0){
-               offset = (width.replace(/px/g,"") * (slides.length - 1));
+               offset = (deletePX(width) * (slides.length - 1));
             }else{
-               offset -= width.replace(/px/g,"");
+               offset -= deletePX(width);
             }
             slidesField.style.transform = `translateX(-${offset}px)`;
 
@@ -350,7 +350,7 @@ window.addEventListener('DOMContentLoaded', () => {
             dot.addEventListener('click', (e)=>{
                   const slideTo = e.target.getAttribute('data-slide-to');
                   slideIndex = slideTo;
-                  offset = (width.replace(/px/g,"") * (slideTo - 1));
+                  offset = (deletePX(width) * (slideTo - 1));
                   slidesField.style.transform = `translateX(-${offset}px)`;
                   dots.forEach(dot => dot.style.opacity = '.5');
                   addOpacity(dots);
