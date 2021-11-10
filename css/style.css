@@ -333,6 +333,7 @@ a {
     justify-content: space-between;
     align-items: center; }
   .calculating__result {
+    overflow-x: scroll;
     font-size: 18px;
     font-weight: bold; }
     .calculating__result span {
