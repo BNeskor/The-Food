@@ -444,7 +444,7 @@ window.addEventListener('DOMContentLoaded', () => {
          const input = document.querySelector(selector);
          input.addEventListener('input',()=>{
             if(input.value.match(/\D/i)){
-               input.value = "";
+               input.value = input.value.replace(/\D/,"");
             }
             switch(input.getAttribute('id')){
                case 'height':
