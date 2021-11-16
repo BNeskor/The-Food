@@ -1,65 +1,52 @@
-function modal() {
-   const modalTriggers = document.querySelectorAll('[data-modal]'),
-      modal = document.querySelector('.modal'),
-      modalTimeout = setTimeout(showModal, 50000);
+
+function showModal(modalSelector, modalTimeout) {
+   const modal = document.querySelector(modalSelector);
+   modal.classList.remove('hide');
+   modal.classList.add('show');
+   document.body.classList.add("scroll");//documnet overflow - hidden  or scroll
+   console.log(modalTimeout);
+   if(modalTimeout){
+      clearTimeout(modalTimeout);
+   }
+}
+function hideModal(modalSelector) {
+   const modal = document.querySelector(modalSelector);
+   modal.classList.add('hide');
+   modal.classList.remove('show');
+   document.body.classList.remove("scroll");//documnet overflow - hidden  or scroll
+}
+
+
+function modal(trigerSelector, modalSelector, modalTimeout) {
+   const modalTriggers = document.querySelectorAll(trigerSelector),
+      modal = document.querySelector(modalSelector);
 
    modalTriggers.forEach(btn => {
       btn.addEventListener('click', () => {
-         showModal();
+         showModal(modalSelector,modalTimeout);
       });
 
    });
    modal.addEventListener('click', (e) => {
       if (e.target === modal || e.target.classList.contains('modal__close')) {
-         hideModal();
+         hideModal(modalSelector);
       }
    });
    document.addEventListener('keydown', (e) => {
       if (e.code === "Escape" && modal.classList.contains('show')) {
-         showModal();
+         showModal(modalSelector, modalTimeout);
       }
    });
-   document.addEventListener('scroll', showModalByscroll);
 
-   function showModal() {
-      modal.classList.remove('hide');
-      modal.classList.add('show');
-      document.body.classList.add("scroll");//bocumnet overflow - hidden  or scroll
-      clearTimeout(modalTimeout);
-      document.removeEventListener('scroll', showModalByscroll);
-   }
-   function hideModal() {
-      modal.classList.add('hide');
-      modal.classList.remove('show');
-      document.body.classList.remove("scroll");//bocumnet overflow - hidden  or scroll
-   }
-
-   function showModalByscroll() {
+   document.addEventListener('scroll',showModalByscroll);
+   function showModalByscroll(){
       if (document.body.offsetHeight < window.scrollY + document.documentElement.clientHeight + 100) {
-         showModal();
+          showModal(modalSelector, modalTimeout);
+          document.removeEventListener('scroll',showModalByscroll);
       }
-   }
-   function showThanksMOdal(message) {
-      const previousModalDialog = document.querySelector('.modal__dialog');
-
-      previousModalDialog.classList.add('hide');
-      showModal();
-
-      const thanksModal = document.createElement('div');
-      thanksModal.classList.add('modal__dialog');
-      thanksModal.innerHTML = `
-   <div class="modal__content">
-          <div class="modal__close" data-clothe>×</div>
-          <div class="modal__title">${message}</div>
-    </div>
-   `;
-      document.querySelector('.modal').append(thanksModal);
-      setTimeout(() => {
-         thanksModal.remove();
-         previousModalDialog.classList.add('show');
-         previousModalDialog.classList.remove('hide');
-         hideModal();
-      }, 2000);
+     
    }
 }
-module.exports = modal;
+export default modal;
+export{showModal};
+export{hideModal};

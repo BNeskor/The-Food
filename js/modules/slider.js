@@ -1,12 +1,12 @@
-function slider(){
-   const prevBtn = document.querySelector('.offer__slider-prev'),
-   slider = document.querySelector('.offer__slider'),
-   nextBtn = document.querySelector('.offer__slider-next'),
-   slides = document.querySelectorAll('.offer__slide'),
-   current = document.querySelector('#current'),
-   total = document.querySelector('#total'),
-   slidesWreaper = document.querySelector('.offer__slider-wrapper'),
-   slidesField = document.querySelector('.offer__slide-inner'),
+function slider({container, slide, nextArrow, prevArrow, totlalCounr, curentCounter, wraper, field}){
+   const prevBtn = document.querySelector(prevArrow),
+   slider = document.querySelector(container),
+   nextBtn = document.querySelector(nextArrow),
+   slides = document.querySelectorAll(slide),
+   current = document.querySelector(curentCounter),
+   total = document.querySelector(totlalCounr),
+   slidesWreaper = document.querySelector(wraper),
+   slidesField = document.querySelector(field),
    width = window.getComputedStyle(slidesWreaper).width,
    deletePX = number => +number.replace(/px/g,"");
 let slideIndex = 1;
@@ -102,4 +102,4 @@ total.innerHTML = getZiro(slides.length);
       }
    }
 }
-module.exports = slider;
+export default slider;

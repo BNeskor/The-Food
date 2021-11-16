@@ -1,5 +1,7 @@
-function forms(){
-   const forms = document.querySelectorAll('form');
+import{showModal, hideModal} from './modal';
+import{postData} from '../services/services';
+function forms(formSelector,modalTimeout){
+   const forms = document.querySelectorAll(formSelector);
 
    const message = {
       loading: 'btn-status',
@@ -11,16 +13,7 @@ function forms(){
       bindPostData(item);
    });
 
-   const postData = async(url, data) =>{
-      const res = await fetch(url,{
-         method: "POST",
-         headers: {
-            'Content-Type':"application/json"
-         },
-         body: JSON.stringify(data)
-      });
-      return await res.json();
-   };
+
 
    function bindPostData(form) {
       form.addEventListener('submit', (e) => {
@@ -47,5 +40,27 @@ function forms(){
          });
       });
    }
+   function showThanksMOdal(message) {
+      const previousModalDialog = document.querySelector('.modal__dialog');
+
+      previousModalDialog.classList.add('hide');
+      showModal('.modal',modalTimeout);
+
+      const thanksModal = document.createElement('div');
+      thanksModal.classList.add('modal__dialog');
+      thanksModal.innerHTML = `
+   <div class="modal__content">
+          <div class="modal__close" data-clothe>×</div>
+          <div class="modal__title">${message}</div>
+    </div>
+   `;
+      document.querySelector('.modal').append(thanksModal);
+      setTimeout(() => {
+         thanksModal.remove();
+         previousModalDialog.classList.add('show');
+         previousModalDialog.classList.remove('hide');
+         hideModal('.modal');
+      }, 2000);
+   }
 }
-module.exports = forms;
+export default forms;

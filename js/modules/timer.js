@@ -1,6 +1,5 @@
-function timer(){
-   const deadLine = "2021-11-12, 00:00:00";
-   setClock('.timer', deadLine);
+function timer(id, deadLine){
+   setClock(id, deadLine);
 
    function getTimeremaning(toEnd) {
       let difference = Date.parse(toEnd) - Date.parse(new Date());
@@ -52,4 +51,4 @@ function timer(){
    }
 }
 
-module.exports = timer;
+export default timer;
